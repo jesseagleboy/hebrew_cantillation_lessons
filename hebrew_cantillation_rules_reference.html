@@ -1,0 +1,634 @@
+
+<style>
+@font-face {
+  font-family: 'SBL Hebrew';
+  src: url('fonts/SBL_Hbrw.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Ezra SIL';
+  src: url('fonts/SILEOT.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(16px, 1.8vw, 20px);
+  line-height: 1.65;
+  max-width: min(1400px, 97vw);
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2.5rem) clamp(1rem, 3vw, 2rem);
+  background: #fafaf8;
+  color: #1a1a1a;
+}
+.rtl-term {
+  font-family: 'SBL Hebrew', 'Ezra SIL', serif;
+  direction: rtl;
+  unicode-bidi: embed;
+  font-size: 1.1em;
+}
+.nikud-base { font-family: 'SBL Hebrew', 'Ezra SIL', serif; }
+.trop-table .rank-1 { color: #A32D2D; font-weight: 600; }
+.trop-table .rank-2 { color: #185FA5; font-weight: 600; }
+.trop-table .rank-3 { color: #0F6E56; font-weight: 600; }
+.trop-table .rank-4 { color: #533AB7; font-weight: 500; }
+.trop-table .conj { color: #888; }
+.container { padding: 1rem 0; }
+.section { margin-bottom: 3rem; }
+.section-title {
+  font-family: Georgia, serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888;
+  border-bottom: 1px solid #e0ddd6;
+  padding-bottom: 10px;
+  margin-bottom: 1.5rem;
+}
+.rule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr));
+  gap: clamp(12px, 1.5vw, 20px);
+}
+.rule-card {
+  background: #fff;
+  border: 1px solid #e8e5de;
+  border-radius: 10px;
+  padding: clamp(1rem, 2vw, 1.5rem) clamp(1rem, 2vw, 1.6rem);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.rule-name {
+  font-size: clamp(15px, 1.6vw, 18px);
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rule-he {
+  font-size: clamp(20px, 2.5vw, 28px);
+  direction: rtl;
+  color: #555;
+  font-family: 'SBL Hebrew', 'Ezra SIL', serif;
+}
+.rule-desc {
+  font-size: clamp(15px, 1.6vw, 18px);
+  color: #444;
+  line-height: 1.7;
+  margin-top: 6px;
+}
+.rule-example {
+  font-size: clamp(17px, 1.9vw, 21px);
+  font-family: 'SBL Hebrew', 'Ezra SIL', Georgia, serif;
+  color: #888;
+  margin-top: 8px;
+  font-style: italic;
+  border-top: 1px solid #f0ede6;
+  padding-top: 7px;
+  line-height: 2.1;
+}
+.badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+  font-family: Georgia, serif;
+}
+.badge-blue { background: #deeaf7; color: #0C447C; }
+.badge-teal { background: #d4efe5; color: #085041; }
+.badge-amber { background: #f5e6c8; color: #633806; }
+.badge-purple { background: #e5e3fa; color: #3C3489; }
+.badge-coral { background: #f5e0d8; color: #712B13; }
+.badge-green { background: #dceece; color: #27500A; }
+
+.trop-table { width: 100%; border-collapse: collapse; font-size: clamp(14px, 1.5vw, 17px); }
+.trop-table th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #888;
+  padding: 10px 14px;
+  border-bottom: 1px solid #e0ddd6;
+  background: #fafaf8;
+}
+.trop-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid #f0ede6;
+  color: #1a1a1a;
+  vertical-align: top;
+  line-height: 1.55;
+}
+.trop-table tr:last-child td { border-bottom: none; }
+.trop-table tr:hover td { background: #faf8f4; }
+.trop-table .he { direction: rtl; font-size: clamp(20px, 2.2vw, 26px); font-family: 'SBL Hebrew', 'Ezra SIL', serif; color: #333; line-height: 2.1; }
+.trop-table .rule-desc { font-size: clamp(13px, 1.4vw, 16px); color: #555; }
+.hl {
+  font-weight: 700;
+  color: #185FA5;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: #185FA5;
+  text-underline-offset: 8px;
+  text-decoration-thickness: 2px;
+  cursor: help;
+  font-size: 1.15em;
+}
+.trop-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f3ee;
+  border: 1px solid #d8d4cc;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: clamp(24px, 2.8vw, 34px);
+  min-width: 3em;
+  min-height: 2.6em;
+  margin-left: 10px;
+  font-family: 'SBL Hebrew', 'Ezra SIL', serif;
+  line-height: 2.4;
+  color: #1a1a1a;
+  vertical-align: middle;
+}
+.trop-he-name {
+  font-family: 'SBL Hebrew', 'Ezra SIL', serif;
+  white-space: nowrap;
+}
+.trop-table td.he {
+  white-space: nowrap;
+}
+.more-examples.open .more-example {
+  font-size: clamp(17px, 1.9vw, 21px);
+  line-height: 2.1;
+}
+
+.note-box {
+  background: #f5f3ee;
+  border-left: 4px solid #c8c2b4;
+  border-radius: 0 8px 8px 0;
+  padding: 1rem 1.25rem;
+  font-size: 15px;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+.see-more-btn {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: #bbb;
+  cursor: pointer;
+  padding: 8px 0 0;
+  font-family: Georgia, serif;
+  font-style: italic;
+  display: block;
+  text-align: left;
+  transition: color 0.15s;
+}
+.see-more-btn:hover { color: #666; }
+.more-examples { display: none; margin-top: 10px; border-top: 1px dashed #e8e4dc; padding-top: 10px; }
+.more-examples.open { display: block; }
+.more-example { font-size: clamp(15px, 1.6vw, 18px); font-family: 'SBL Hebrew', 'Ezra SIL', Georgia, serif; color: #888; font-style: italic; margin-bottom: 7px; line-height: 2.0; padding-left: 10px; border-left: 2px solid #e8e4dc; }
+.more-example:last-child { margin-bottom: 0; }
+.more-example .label { font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #bbb; display: block; margin-bottom: 2px; }
+</style>
+
+<script>
+function toggleExamples(btn) {
+  const more = btn.nextElementSibling;
+  const open = more.classList.toggle('open');
+  btn.textContent = open ? '▲ fewer examples' : '▼ more examples';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ── Trop cell reformatter ── */
+  document.querySelectorAll('.trop-table .he').forEach(cell => {
+    const text = cell.textContent.trim();
+    const lastSpace = text.lastIndexOf(' ');
+    if (lastSpace < 0) return;
+    const name = text.substring(0, lastSpace).trim();
+    const mark = text.substring(lastSpace + 1).trim();
+    if (!mark || !/[\u0591-\u05C7\u05C3\u05F3]/.test(mark)) return;
+    /* Use הָ (hey+kamatz) as a real-letter base so marks render on proper metrics */
+    cell.style.whiteSpace = 'nowrap';
+    cell.innerHTML =
+      `<span class="trop-chip">הָ${mark}</span><span class="trop-he-name"> ${name}</span>`;
+  });
+
+  /* ── JS tooltip — viewport-clamped, no ::after needed ── */
+  const tip = document.createElement('div');
+  tip.style.cssText = [
+    'position:fixed',
+    'background:#1a1a1a',
+    'color:#fff',
+    'padding:6px 14px',
+    'border-radius:6px',
+    'font:13px/1.5 Georgia,serif',
+    'pointer-events:none',
+    'z-index:9999',
+    'display:none',
+    'box-shadow:0 3px 12px rgba(0,0,0,0.25)',
+    'max-width:320px',
+    'white-space:normal',
+    'direction:ltr',
+  ].join(';');
+  document.body.appendChild(tip);
+
+  document.querySelectorAll('.hl[data-tip]').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      tip.textContent = el.dataset.tip;
+      tip.style.display = 'block';
+      const r = el.getBoundingClientRect();
+      const tw = tip.offsetWidth, th = tip.offsetHeight;
+      const pad = 12;
+      let left = r.left + r.width / 2 - tw / 2;
+      let top  = r.top  - th - 8;
+      left = Math.max(pad, Math.min(left, window.innerWidth  - tw - pad));
+      if (top < pad) top = r.bottom + 8;   /* flip below if too close to top */
+      top  = Math.min(top,  window.innerHeight - th - pad);
+      tip.style.left = left + 'px';
+      tip.style.top  = top  + 'px';
+    });
+    el.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+  });
+
+});
+</script>
+
+<div class="container">
+
+<div class="section">
+  <div class="section-title">Shva rules — <bdi dir="rtl" class="nikud-base" style="font-size:1.3em">שְׁוָא</bdi></div>
+  <div class="rule-grid">
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-blue">Shva Na</span> <span class="rule-he">שְׁוָא נָע</span></div>
+      <div class="rule-desc">Moving shva — pronounced like a very short "e." Occurs at the start of a word, under the first of two consecutive shva-bearing letters, after a long vowel, or under a letter with dagesh chazak.</div>
+      <div class="rule-example">e.g. <span class="hl" data-tip="shva na — start of word">בְּ</span>רֵאשִׁית — the first בְּ is shva na (start of word)</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example"><span class="label">First of two consecutive shvas</span>שְׁמַרְתֶּם — the שְׁ is na; the מְ that follows is nach</div>
+        <div class="more-example"><span class="label">After a long vowel</span>קָרְאוּ — the רְ follows a kamatz (long), so it is na</div>
+        <div class="more-example"><span class="label">Under dagesh chazak</span>הַמְּלָכִים — the מְּ bears a dagesh chazak, making its shva na</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-teal">Shva Nach</span> <span class="rule-he">שְׁוָא נָח</span></div>
+      <div class="rule-desc">Resting shva — silent. Closes a syllable. Occurs at the end of a syllable, after a short vowel, or under the second of two consecutive shva letters.</div>
+      <div class="rule-example">e.g. מַ<span class="hl" data-tip="shva nach — closes syllable after short patach">לְ</span>כּוּת — the לְ is shva nach, closing the first syllable</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example"><span class="label">Second of two consecutive shvas</span>יִשְׁמְרוּ — the first שְׁ is na, the second מְ is nach</div>
+        <div class="more-example"><span class="label">After a short vowel</span>כָּתַבְתָּ — the בְ follows a short patach → nach, closing the syllable</div>
+        <div class="more-example"><span class="label">End of word</span>נֶפֶשׁ — the שׁ at the end of the word has a nach (always silent at word's end)</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-amber">Shva at end</span></div>
+      <div class="rule-desc">A shva at the very end of a word is always shva nach — never pronounced.</div>
+      <div class="rule-example">e.g. אֶרֶץ — final tsadi has a silent shva nach</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example">יֶלֶד — the final דְ is silent nach</div>
+        <div class="more-example">מֶלֶךְ — the final כְ is silent nach</div>
+        <div class="more-example">נֶפֶשׁ — the final שׁ is silent nach</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-purple">Chataf vowels</span> <span class="rule-he">חֲטָפִים</span></div>
+      <div class="rule-desc">Guttural letters (א ה ח ע) cannot take a silent shva, so they take a chataf — a "half vowel." Chataf patach (<span class="nikud-base">◌ֲ</span>), chataf segol (<span class="nikud-base">◌ֱ</span>), chataf kamatz (<span class="nikud-base">◌ֳ</span>) are always pronounced.</div>
+      <div class="rule-example">e.g. <span class="hl" data-tip="chataf segol (◌ֱ) — guttural aleph cannot take a silent shva">אֱלֹקִים</span> — chataf segol (<span class="nikud-base">◌ֱ</span>) under aleph</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example"><span class="label">Chataf patach (ֲ)</span>חֲלוֹם — under chet; most common chataf</div>
+        <div class="more-example"><span class="label">Chataf segol (ֱ)</span>אֱלֹקִים — under aleph; very common</div>
+        <div class="more-example"><span class="label">Chataf kamatz (ֳ) — rare</span>עֳנִי — under ayin; found only a handful of times in the Torah</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Dagesh rules — <bdi dir="rtl" class="nikud-base" style="font-size:1.3em">דָּגֵשׁ</bdi></div>
+  <div class="rule-grid">
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-blue">Dagesh Kal</span> <span class="rule-he">דָּגֵשׁ קַל</span></div>
+      <div class="rule-desc">Appears only in the six BeGeD KeFaT letters (בגדכפת) at the start of a word, after a shva nach, or after a closed syllable. Changes the pronunciation from a fricative to a stop.</div>
+      <div class="rule-example">בּ = b (not v), כּ = k (not ch), פּ = p (not f)</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example"><span class="label">Start of word</span>בְּרֵאשִׁית — בּ is a stop (b); without dagesh it would be v</div>
+        <div class="more-example"><span class="label">After shva nach</span>יִפְתַּח — the פּ follows a shva nach → dagesh kal → p not f</div>
+        <div class="more-example"><span class="label">After closed syllable</span>מִכְתָּב — כּ and תּ both take dagesh kal after the closed syllables that precede them</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-coral">Dagesh Chazak</span> <span class="rule-he">דָּגֵשׁ חָזָק</span></div>
+      <div class="rule-desc">Doubles the letter. Can appear in any letter except gutturals (אהחע) and ר. The vowel before a dagesh chazak is always short. Indicates a shva na if under the doubled letter.</div>
+      <div class="rule-example">e.g. הַ<span class="hl" data-tip="dagesh chazak — מּ is doubled">מֶּ</span>לֶךְ — the מּ is doubled</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example"><span class="label">Definite article + ה assimilation</span>הַנָּהָר — the נּ doubles because the ה of הַ assimilates into it</div>
+        <div class="more-example"><span class="label">Verbal doubling (Pi'el)</span>דִּבֶּר — the בּ is doubled; pi'el binyan always doubles the middle root letter</div>
+        <div class="more-example"><span class="label">Assimilated נ</span>הִגִּיד — the גּ is doubled because an original נ assimilated into it (root נ.ג.ד)</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-green">Mappiq</span> <span class="rule-he">מַפִּיק</span></div>
+      <div class="rule-desc">A dot in a final ה (הּ) — makes it a pronounced consonant, not a vowel letter. Rare; signals a possessive suffix.</div>
+      <div class="rule-example">e.g. גְּבוּלָ<span class="hl" data-tip="mappiq — הּ is a pronounced consonant, not a vowel letter">הּ</span> — "her border"</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example">בְּיָדָהּ — "in her hand" (Bereishit 38:18)</div>
+        <div class="more-example">רוּחָהּ — "her spirit/breath"; the הּ is fully pronounced</div>
+        <div class="more-example">נַפְשָׁהּ — "her soul"; contrast with נַפְשָׁה (no mappiq) = "her soul" as a vowel letter — context tells you which</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-purple">Gutturals — no dagesh</span></div>
+      <div class="rule-desc">The letters א ה ח ע (and usually ר) never take a dagesh of any kind. When a dagesh chazak would be expected, the preceding vowel is often lengthened instead (compensatory lengthening).</div>
+      <div class="rule-example">e.g. יְבָרֶכְךָ — the ר cannot double</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example"><span class="label">Compensatory lengthening</span>מֵאַרְצְךָ — the א cannot take dagesh, so the preceding vowel lengthens to tsere</div>
+        <div class="more-example"><span class="label">Resh — treated as guttural</span>בֵּרַךְ — the ר cannot take dagesh even though the root (ב.ר.כ) in pi'el would expect it</div>
+        <div class="more-example"><span class="label">Virtual doubling</span>Sometimes the vowel before a guttural simply stays short without lengthening — called "virtual doubling" (the doubling is implied but not marked)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Stress rules — <bdi dir="rtl" class="nikud-base" style="font-size:1.3em">טַעַם</bdi></div>
+  <div class="rule-grid">
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-blue">Mil'ra</span> <span class="rule-he">מִלְרַע</span></div>
+      <div class="rule-desc">Stress on the last syllable — the most common pattern in Biblical Hebrew.</div>
+      <div class="rule-example">e.g. דָּבָר — stress on בָר (last syllable)</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example">אֱלֹקִים — stress on הִים (last syllable)</div>
+        <div class="more-example">שָׁמַיִם — stress on יִם</div>
+        <div class="more-example">כָּתַב — stress on טַב (qal perfect 3ms — mil'ra)</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-teal">Mil'el</span> <span class="rule-he">מִלְעֵיל</span></div>
+      <div class="rule-desc">Stress on the second-to-last (penultimate) syllable. Common in certain verb forms (like the imperative and some perfects), with certain suffixes, or when indicated by the trop.</div>
+      <div class="rule-example">e.g. אֶ֫רֶץ — stress on אֶ, not ץ</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example"><span class="label">Imperative</span>שְׁמַ֫ע — "hear!" — stress on שְׁמַ (imperative often mil'el)</div>
+        <div class="more-example"><span class="label">Qal perfect 1cs</span>כָּתַ֫בְתִּי — stress retreats to כָּתַ before the תִּי suffix</div>
+        <div class="more-example"><span class="label">Segolate nouns</span>מֶ֫לֶךְ, סֵ֫פֶר, קֹ֫דֶשׁ — the whole class of segolate nouns is mil'el</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-amber">Nasog Achor</span> <span class="rule-he">נָסוֹג אָחוֹר</span></div>
+      <div class="rule-desc">"Retreating accent" — stress shifts back to avoid two consecutive stressed syllables between adjacent words. Very common in leining.</div>
+      <div class="rule-example">e.g. <span class="hl" data-tip="nasog achor — stress retreats to avoid clash with טוֹב">בֹּ֫קֶר</span> טוֹב — stress retreats on בֹּקֶר</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example">טוֹב מְאֹד — "very good" (Bereishit 1:31) — stress on טוֹב retreats away from מְאֹד</div>
+        <div class="more-example">כִּי־טוֹב — when joined by maqqef, accent retreats on כִּי to avoid clash with טוֹב</div>
+        <div class="more-example">אֶחָ֫ד הָיָה — "there was one" — the הָיָה following causes retreat on אֶחָד</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-coral">Meteg</span> <span class="rule-he">מֶתֶג</span></div>
+      <div class="rule-desc">A small vertical line to the left of a vowel — marks a secondary stress or indicates a long vowel that must not be reduced, especially before shva.</div>
+      <div class="rule-example">e.g. וְהָֽאָרֶץ — meteg under the kamatz, keeping it full "ah"</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example"><span class="label">Prevents reduction before shva</span>בָּֽרָא — the kamatz under בָּ has meteg; without it, it might reduce to a shva</div>
+        <div class="more-example"><span class="label">Secondary stress in long words</span>וַיְהִֽי־כֵן — marks a secondary rhythmic beat in the phrase</div>
+        <div class="more-example"><span class="label">Before composite shva</span>יָֽדַע — the kamatz before the composite shva must be held long; meteg signals this</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Ta'amei hamikra — hierarchy of disjunctives</div>
+  <div class="note-box">
+    Trop marks serve two functions: <strong>musical</strong> (melody) and <strong>syntactic</strong> (punctuation). Disjunctives separate clauses; conjunctives connect a word to the next disjunctive. Higher-rank disjunctives = stronger pauses = bigger syntactic breaks.
+  </div>
+  <table class="trop-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Hebrew</th>
+        <th>Function</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="rank-1">1 — Emperor</td>
+        <td>Sof pasuk</td>
+        <td class="he">סוֹף פָּסוּק ׃</td>
+        <td class="rule-desc">End of verse. Full stop. Always present.</td>
+      </tr>
+      <tr>
+        <td class="rank-1">1 — Emperor</td>
+        <td>Etnachta</td>
+        <td class="he">אֶתְנַחְתָּא ֑</td>
+        <td class="rule-desc">Major mid-verse pause. Divides the verse into two halves. Like a semicolon.</td>
+      </tr>
+      <tr>
+        <td class="rank-2">2 — King</td>
+        <td>Segol</td>
+        <td class="he">סֶגּוֹל ֒</td>
+        <td class="rule-desc">Strong pause in the first half of the verse (before etnachta).</td>
+      </tr>
+      <tr>
+        <td class="rank-2">2 — King</td>
+        <td>Shalshelet</td>
+        <td class="he">שַׁלְשֶׁלֶת ֓</td>
+        <td class="rule-desc">Rare, drawn-out trop. Long melodic chain. Strong disjunctive with dramatic effect.</td>
+      </tr>
+      <tr>
+        <td class="rank-2">2 — King</td>
+        <td>Zakef katon</td>
+        <td class="he">זָקֵף קָטוֹן ֔</td>
+        <td class="rule-desc">Common strong pause. Subdivides sections within a half-verse.</td>
+      </tr>
+      <tr>
+        <td class="rank-2">2 — King</td>
+        <td>Zakef gadol</td>
+        <td class="he">זָקֵף גָּדוֹל ֕</td>
+        <td class="rule-desc">Stronger version of zakef katon. Less common.</td>
+      </tr>
+      <tr>
+        <td class="rank-3">3 — Duke</td>
+        <td>Tifcha</td>
+        <td class="he">טִפְחָא ֖</td>
+        <td class="rule-desc">Very common. Precedes (and serves) sof pasuk or etnachta. Like a comma.</td>
+      </tr>
+      <tr>
+        <td class="rank-3">3 — Duke</td>
+        <td>Revia</td>
+        <td class="he">רְבִיעַ ֗</td>
+        <td class="rule-desc">Moderate disjunctive. Subdivides zakef territory.</td>
+      </tr>
+      <tr>
+        <td class="rank-3">3 — Duke</td>
+        <td>Zarka</td>
+        <td class="he">זַרְקָא ֘</td>
+        <td class="rule-desc">Precedes segol. Paired disjunctive.</td>
+      </tr>
+      <tr>
+        <td class="rank-3">3 — Duke</td>
+        <td>Pashta</td>
+        <td class="he">פַּשְׁטָא ֙</td>
+        <td class="rule-desc">Common disjunctive in the second half of a verse. Appears after the word's main vowel.</td>
+      </tr>
+      <tr>
+        <td class="rank-3">3 — Duke</td>
+        <td>Yetiv</td>
+        <td class="he">יְתִיב ֚</td>
+        <td class="rule-desc">Weak disjunctive; precedes tifcha. Appears on monosyllabic words or mil'el words.</td>
+      </tr>
+      <tr>
+        <td class="rank-3">3 — Duke</td>
+        <td>Tevir</td>
+        <td class="he">תְּבִיר ֛</td>
+        <td class="rule-desc">Common in second half. Subordinate to tifcha and etnachta.</td>
+      </tr>
+      <tr>
+        <td class="rank-4">4 — Count</td>
+        <td>Geresh</td>
+        <td class="he">גֵּרֵשׁ ֜</td>
+        <td class="rule-desc">Lighter disjunctive pause. Subdivides within duke territory.</td>
+      </tr>
+      <tr>
+        <td class="rank-4">4 — Count</td>
+        <td>Gershayim</td>
+        <td class="he">גֵּרְשַׁיִם ֞</td>
+        <td class="rule-desc">Stronger than geresh. Two marks; used when geresh would be ambiguous.</td>
+      </tr>
+      <tr>
+        <td class="rank-4">4 — Count</td>
+        <td>Pazer</td>
+        <td class="he">פָּזֵר ֡</td>
+        <td class="rule-desc">Emphatic disjunctive. Marks lists or special semantic emphasis.</td>
+      </tr>
+      <tr>
+        <td class="rank-4">4 — Count</td>
+        <td>Telisha gedola</td>
+        <td class="he">תְּלִישָׁא גְּדוֹלָה ֠</td>
+        <td class="rule-desc">Appears at the beginning of a word. Weaker disjunctive in longer verses.</td>
+      </tr>
+      <tr>
+        <td class="conj">Conjunctive</td>
+        <td>Munach</td>
+        <td class="he">מוּנַח ֣</td>
+        <td class="rule-desc">Most common conjunctive. Connects word to the following disjunctive.</td>
+      </tr>
+      <tr>
+        <td class="conj">Conjunctive</td>
+        <td>Mercha</td>
+        <td class="he">מֵרְכָא ֥</td>
+        <td class="rule-desc">Second most common conjunctive. Often precedes tifcha or sof pasuk.</td>
+      </tr>
+      <tr>
+        <td class="conj">Conjunctive</td>
+        <td>Darga</td>
+        <td class="he">דַּרְגָּא ֧</td>
+        <td class="rule-desc">Conjunctive serving tevir.</td>
+      </tr>
+      <tr>
+        <td class="conj">Conjunctive</td>
+        <td>Kadma</td>
+        <td class="he">קַדְמָא ֨</td>
+        <td class="rule-desc">Conjunctive for pashta and geresh.</td>
+      </tr>
+      <tr>
+        <td class="conj">Conjunctive</td>
+        <td>Azla (Geresh)</td>
+        <td class="he">אַזְלָא ֜</td>
+        <td class="rule-desc">Same shape as geresh; context determines if disjunctive or conjunctive.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-title">Key dikduk rules for leining</div>
+  <div class="rule-grid">
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-blue">Kamatz vs Kamatz Katan</span></div>
+      <div class="rule-desc">A regular kamatz (ָ) is the long "ah" vowel. A kamatz katan looks identical but is pronounced as a short "o" (like cholam). It occurs in a closed unaccented syllable — context and trop position determine which it is.</div>
+      <div class="rule-example">e.g. כָּל = "kol" — kamatz katan (closed, unaccented syllable)</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example"><span class="label">Kamatz katan</span>חָכְמָה = "chokh-mah" — first syllable is closed and unaccented → "o"</div>
+        <div class="more-example"><span class="label">Kamatz katan</span>עָמְדוּ = "om-du" — standing; first syllable closed → "o"</div>
+        <div class="more-example"><span class="label">Regular kamatz (gadol)</span>אָמַר = "a-mar" — open, accented → long "ah"; never "o"</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-teal">Dalet vs Resh</span></div>
+      <div class="rule-desc">ד with a dagesh = "d." Without dagesh, Ashkenazim pronounce it as "d" anyway; Sephardim use a softer sound. ר never takes a dagesh — if you see what looks like a dot in a resh, it's part of the vowel system, not a dagesh.</div>
+      <div class="rule-example">e.g. דָּבָר — the first דּ has dagesh kal (d); the ר never has a dagesh</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example">אֲדֹנָי — the דּ has dagesh kal after the chataf; the ר in אָרֶץ never does</div>
+        <div class="more-example"><span class="label">Common mistake</span>בָּרָא — both ר letters have no dagesh; what looks like a dot in some fonts is a vowel mark, not a dagesh</div>
+        <div class="more-example"><span class="label">Pi'el with resh</span>בֵּרַךְ — in pi'el, the middle root letter is doubled; but ר resists → no dagesh, vowel may compensate</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-amber">Patach Genuvah</span> <span class="rule-he">פַּתַח גְּנוּבָה</span></div>
+      <div class="rule-desc">"Stolen patach" — a patach appearing under a final guttural (ח, ע, or הּ) that is pronounced before the consonant, not after it.</div>
+      <div class="rule-example">e.g. רוּ<span class="hl" data-tip="patach genuvah — pronounced BEFORE the ח, not after">חַ</span> — pronounced "ru-ach" not "ru-cha"</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example">שָׁמֵעַ — "sha-me-a" — the patach is stolen before the ayin</div>
+        <div class="more-example">גָּבֹהַּ — "ga-vo-ah" — patach before the final הּ (mappiq)</div>
+        <div class="more-example"><span class="label">Leining tip</span>If you see a patach under a final ח or ע, always pronounce the vowel before the consonant — never after</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-purple">Kri / Ktiv</span> <span class="rule-he">קְרִי / כְּתִיב</span></div>
+      <div class="rule-desc">What's written (ktiv) vs. what's read (kri). The vowels in the text belong to the kri word, not the ktiv word. Most famous: the four-letter name of <bdi dir="rtl" class="nikud-base">ה׳</bdi> — the ktiv letters carry the vowels of the kri word (<bdi dir="rtl" class="nikud-base">הַשֵּׁם</bdi> or <bdi dir="rtl" class="nikud-base">אֱלֹקִים</bdi>), telling the reader which to say.</div>
+      <div class="rule-example">e.g. <bdi dir="rtl" class="nikud-base">ה׳</bdi> — the four-letter name is written but read as <bdi dir="rtl" class="nikud-base">הַשֵּׁם</bdi></div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example"><span class="label">Very common kri/ktiv</span>הִוא written for הִיא ("she") throughout Chumash — the vowels signal the kri</div>
+        <div class="more-example"><span class="label">Jerusalem</span>ירושלם (ktiv, no yud) is read יְרוּשָׁלַיִם — the full spelling is only in the kri tradition</div>
+        <div class="more-example"><span class="label">Leining rule</span>In a Sefer Torah there are no vowels — the ba'al koreh must know the kri from memory; the Tikkun shows both</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-coral">Maqqef</span> <span class="rule-he">מַקֵּף</span></div>
+      <div class="rule-desc">A hyphen-like connector between two words — they are read as one unit with a single trop accent. The first word typically loses its accent.</div>
+      <div class="rule-example">e.g. כִּי־טוֹב — read as one rhythmic unit</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example">לֹא־תִרְצַח — "you shall not murder" (sixth commandment) — לֹא loses its accent</div>
+        <div class="more-example">וַיְהִי־כֵן — "and it was so" — very common phrase in Bereishit</div>
+        <div class="more-example"><span class="label">Vowel change with maqqef</span>Short words like כָּל, כֹּל, מָה often change their vowel when under maqqef: כׇּל־ (kamatz katan) before the connected word</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name"><span class="badge badge-green">Aleph vs Ayin</span></div>
+      <div class="rule-desc">Both are "silent" in most modern pronunciations, but classically: א is a glottal stop, ע is a pharyngeal. For Torah reading, awareness of which is which affects accuracy — especially with vowels attached to them.</div>
+      <div class="rule-example">e.g. אָמַר vs עָמַד — both begin with "a" but different consonants</div>
+      <button class="see-more-btn" onclick="toggleExamples(this)">▼ more examples</button>
+      <div class="more-examples">
+        <div class="more-example"><span class="label">Aleph (glottal stop)</span>אֶרֶץ, אֱלֹהִים, אָדָם — the aleph marks a distinct onset; in careful speech a slight catch in the throat</div>
+        <div class="more-example"><span class="label">Ayin (pharyngeal)</span>עַם, עֶבֶד, עוֹלָם — in Yemenite and some Sephardi traditions, clearly distinct from aleph</div>
+        <div class="more-example"><span class="label">Why it matters for leining</span>Confusing aleph and ayin can change word meanings: אֵין (nothing) vs עַיִן (eye); אֹר (light) vs עוֹר (skin)</div>
+      </div>
+  </div>
+</div>
+
+</div>
